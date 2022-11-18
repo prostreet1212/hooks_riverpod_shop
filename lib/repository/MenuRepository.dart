@@ -4,6 +4,8 @@ abstract class MenuRepository {
   const MenuRepository();
 
   List<CoffeeMenu> getListMenu();
+  
+  void changeMenuStatus(CoffeeMenu coffeeMenu);
 }
 
 class ConstMenuRepository extends MenuRepository {
@@ -19,5 +21,10 @@ class ConstMenuRepository extends MenuRepository {
   @override
   List<CoffeeMenu> getListMenu() {
     return listMenu;
+  }
+
+  @override
+  void changeMenuStatus(CoffeeMenu coffeeMenu) {
+    return;
   }
 }

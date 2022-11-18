@@ -9,10 +9,12 @@ class MyHomePage extends HookConsumerWidget{
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     List<CoffeeMenu> menuList=ref.watch(menuProvider);
-    print(menuList[0].name);
+    final menuController=ref.watch(menuProvider.notifier);
+    print('build');
     return Scaffold(
       appBar: AppBar(
         title: Text('Кофешоп'),
+        actions: [],
       ),
       body: GridView.count(
           shrinkWrap: true,
@@ -59,10 +61,7 @@ class MyHomePage extends HookConsumerWidget{
                                     !menu.isBuy ? Colors.grey : Colors.red,
                                   ),
                                   onPressed: () {
-                                    //ref.read(menuProvider.notifier).buyNot(menu);
-                                    //ref.read(badgeProvider.notifier).state.add(menu);
-                                    //menuNotifier.buyNot(menu);
-                                    //badgeNotifier.changBadgeCount(menu);
+                                    menuController.buyNot(menu);
                                   },
                                 );
                               },),
