@@ -5,3 +5,6 @@ import 'package:hooks_riverpod_shop/repository/MenuRepository.dart';
 
 final menuProvider = StateNotifierProvider<MenuNotifier, List<CoffeeMenu>>(
     (_) => MenuNotifier(ConstMenuRepository()));
+
+final badgeProvider = StateNotifierProvider<BadgeNotifier, List<CoffeeMenu>>(
+        (_) => BadgeNotifier());

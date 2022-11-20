@@ -1,20 +1,35 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:hooks_riverpod_shop/model/coffe_menu.dart';
 import 'package:hooks_riverpod_shop/providers/state_provider.dart';
-class MyHomePage extends HookConsumerWidget{
+import 'package:hooks_riverpod_shop/ui/badge_screen.dart';
 
+class MyHomePage extends HookConsumerWidget {
   const MyHomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    List<CoffeeMenu> menuList=ref.watch(menuProvider);
-    final menuController=ref.watch(menuProvider.notifier);
+    List<CoffeeMenu> menuList = ref.watch(menuProvider);
+    final menuController = ref.watch(menuProvider.notifier);
+    final badgeController = ref.watch(badgeProvider.notifier);
+    int badgeCount = ref.watch(badgeProvider).length;
     print('build');
     return Scaffold(
       appBar: AppBar(
         title: Text('Кофешоп'),
-        actions: [],
+        leading: Badge(
+          badgeContent: Text(badgeCount.toString()),
+          position: const BadgePosition(start: 26, bottom: 26),
+          child: IconButton(
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return BadgeScreen();
+              }));
+            },
+            icon: const Icon(Icons.shopping_cart),
+          ),
+        ),
       ),
       body: GridView.count(
           shrinkWrap: true,
@@ -22,12 +37,12 @@ class MyHomePage extends HookConsumerWidget{
           childAspectRatio: MediaQuery.of(context).size.width /
               (MediaQuery.of(context).size.height / 1.5),
           padding:
-          const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
+              const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
           crossAxisSpacing: 20,
           mainAxisSpacing: 20,
           crossAxisCount: 2,
           children: menuList.map(
-                (menu) {
+            (menu) {
               return Card(
                 color: Color.fromARGB(255, 255, 229, 85),
                 shape: RoundedRectangleBorder(
@@ -53,19 +68,22 @@ class MyHomePage extends HookConsumerWidget{
                               color: Color.fromARGB(255, 174, 206, 231),
                               height: 40,
                               width: 40,
-                              child: Consumer(builder: (context,ref,child){
-                                return IconButton(
-                                  icon: Icon(
-                                    Icons.shopping_basket,
-                                    color:
-                                    !menu.isBuy ? Colors.grey : Colors.red,
-                                  ),
-                                  onPressed: () {
-                                    menuController.buyNot(menu);
-                                  },
-                                );
-                              },),
-
+                              child: Consumer(
+                                builder: (context, ref, child) {
+                                  return IconButton(
+                                    icon: Icon(
+                                      Icons.shopping_basket,
+                                      color: !menu.isBuy
+                                          ? Colors.grey
+                                          : Colors.red,
+                                    ),
+                                    onPressed: () {
+                                      menuController.buyNot(menu);
+                                      badgeController.changeBadgeCount(menu);
+                                    },
+                                  );
+                                },
+                              ),
                             ),
                           )
                         ],
@@ -98,6 +116,4 @@ class MyHomePage extends HookConsumerWidget{
           ).toList()),
     );
   }
-
-
 }
