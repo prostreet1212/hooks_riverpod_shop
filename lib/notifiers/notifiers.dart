@@ -4,13 +4,13 @@ import '../repository/MenuRepository.dart';
 
 
 class MenuNotifier extends StateNotifier<List<CoffeeMenu>>{
-  final MenuRepository _menuRepositority;
-  MenuNotifier(this._menuRepositority):super([]){
+  //final MenuRepository _menuRepositority;
+  MenuNotifier():super([]){
     _init();
   }
 
   void _init() {
-    state= _menuRepositority.getListMenu();
+    state= ConstMenuRepository().getListMenu();
   }
 
   void buyNot(CoffeeMenu cofee){
